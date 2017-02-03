@@ -190,19 +190,24 @@ interface PieChartOptions extends ChartSettings {
     legendTemplate?: string;
 }
 
-interface Chart {
-    Line(data: LinearChartData, options?: LineChartOptions): LinearInstance;
-    Bar(data: LinearChartData, options?: BarChartOptions): LinearInstance;
-    Radar(data: LinearChartData, options?: RadarChartOptions): LinearInstance;
-
-    PolarArea(data: CircularChartData[], options?: PolarAreaChartOptions): CircularInstance;
-    Pie(data: CircularChartData[], options?: PieChartOptions): CircularInstance;
-    Doughnut(data: CircularChartData[], options?: PieChartOptions): CircularInstance;
+interface ConstructorOptions {
+    data: ChartData | LinearChartData | CircularChartData;
+    options?: ChartOptions |  LineChartOptions | BarChartOptions | RadarChartOptions | PolarAreaChartOptions | PieChartOptions;
 }
 
-declare var Chart: {
-    new (context: CanvasRenderingContext2D): Chart;
-    defaults: {
-        global: ChartSettings;
-    }
-};
+interface DefaultConstructorOptions extends ConstructorOptions {
+  type: string;
+}
+
+interface Chart {
+    constructor(ctx: CanvasRenderingContext2D, options: DefaultConstructorOptions);
+    Line(ctx: CanvasRenderingContext2D, options: ConstructorOptions);
+    Bar(ctx: CanvasRenderingContext2D, options: ConstructorOptions);
+    Radar(ctx: CanvasRenderingContext2D, options: ConstructorOptions);
+
+    PolarArea(ctx: CanvasRenderingContext2D, options: ConstructorOptions);
+    Pie(ctx: CanvasRenderingContext2D, options: ConstructorOptions);
+    Doughnut(ctx: CanvasRenderingContext2D, options: ConstructorOptions);
+}
+
+declare const Chart: Chart;
